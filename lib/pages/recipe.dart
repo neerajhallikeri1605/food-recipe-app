@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_food_app/constants/apiConstant.dart';
 import 'package:new_food_app/modal/food.dart';
 import 'dart:convert';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
@@ -15,30 +16,42 @@ class Recipe extends StatefulWidget {
 }
 
 class _RecipeState extends State<Recipe> {
-  List<Food> mealsByID = [];
-  List array = [];
+  Food? mealsByID ;
+
   void fetchRecipe() async{
-      final response2 = await http.get(Uri.parse("https://themealdb.com/api/json/v1/1/lookup.php?i=$endpoint"));
+    print("fetch recipe called");
+    print(endpoint);
+
+      print('neeraj url = ${ApiConstant.recipeDetailUrl}$endpoint');
+      final response2 = await http.get(Uri.parse('${ApiConstant.recipeDetailUrl}$endpoint'));
+      print("neeraj 26 = ${response2}");
+
       final body2 = response2.body;
+      print(response2.statusCode);
+    print("neeraj 28 = ${body2}");
       final jsonID = jsonDecode(body2);
-      final results = jsonID["meals"] as List<dynamic>;
-      final transformed = results.map((e){
-        return Food(
-            strMeal: e['strMeal'],
-            strArea: e['strArea'],
-            strCategory: e['strCategory'],
-            strInstructions: e['strInstructions'],
-            strMealThumb: e['strMealThumb'],
-            strYoutube: e['strYoutube'],
-            strSource: e['strSource']
-
-        );
-      }).toList();
-
+    print("neeraj 30 = ${jsonID}");
+      final results = jsonID ;
+    print("neeraj 33 = ${results}");
+      final transformed = Food.fromJson(results);
+      // results.map((e){
+      //   return Food(
+      //       name: e['name'],
+      //       cuisine: e['cuisine'],
+      //       // strCategory: e['strCategory'],
+      //       instructions: e['instructions'],
+      //       image: e['image'],
+      //       // strYoutube: e['strYoutube'],
+      //       // strSource: e['strSource']
+      //   );
+      // });
+      print(results);
 
       setState(() {
         mealsByID = transformed;
+        print("neeraj instruction = ${mealsByID?.instructions}");
       });
+    print("fetch recipe completed");
 
   }
 
@@ -74,7 +87,7 @@ class _RecipeState extends State<Recipe> {
           icon: const Icon(Icons.info_outline_rounded, color: Colors.white, size: 30,),
         ),
       ),
-      body:mealsByID.isEmpty ? Container(
+      body:mealsByID==null ? Container(
         alignment: Alignment.center,
           child: const SpinKitPouringHourGlassRefined(
             color: Colors.amber,
@@ -86,7 +99,7 @@ class _RecipeState extends State<Recipe> {
               SliverAppBar(
                 backgroundColor: Colors.amber,
                 pinned: true,
-                iconTheme: IconThemeData(
+                iconTheme: const IconThemeData(
                   color: Colors.white,
                   fill: 0,
                   size: 30
@@ -97,14 +110,14 @@ class _RecipeState extends State<Recipe> {
                   title: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     child: Text(
-                        mealsByID[0].strMeal,
-                    style: TextStyle(
+                        mealsByID?.name ?? "",
+                    style: const TextStyle(
                       fontSize: 24,
                       color: Colors.white
                     )
                       ,),
                   ),
-                  background: Image.network(mealsByID[0].strMealThumb,
+                  background: Image.network(mealsByID!.image,
                   color: Colors.black26,
                   colorBlendMode: BlendMode.multiply,
                   fit: BoxFit.cover,),
@@ -115,64 +128,76 @@ class _RecipeState extends State<Recipe> {
               //Category and Provinence
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Category:",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber
-                            ),),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Category:",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.amber
+                                ),),
 
-                          Text(mealsByID[0].strCategory,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)
-                            ,),
-                        ],
-                      ),
-
-                      const VerticalDivider(
-                        thickness: 2, // Make the divider thin
-                        width: 20,    // Adjust the spacing between the two children
-                        color: Colors.black,
-                      ),
-
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Provenance:",
-                            style: TextStyle(
-                                fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.amber
-                            ),),
-                          Text(mealsByID[0].strArea,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black)
-                            ,),
-                        ],
-                      ),
-
-
-                    ],
+                              Text("Some Category",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)
+                                ,),
+                            ],
+                          ),
+                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(12.0),
+                        //   child: Image.network(""),
+                        // ),
+                    
+                        // const VerticalDivider(
+                        //   thickness: 2, // Make the divider thin
+                        //   width: 20,    // Adjust the spacing between the two children
+                        //   color: Colors.black,
+                        // ),
+                    
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Provenance:",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.amber
+                                ),),
+                              Text(mealsByID!.cuisine,
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)
+                                ,),
+                            ],
+                          ),
+                        ),
+                    
+                    
+                      ],
+                    ),
                   ),
                 ),
               ),
 
               //Ingredients
-              SliverToBoxAdapter(
+              const SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -184,7 +209,7 @@ class _RecipeState extends State<Recipe> {
                         ),),
                       SizedBox(height: 10,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        padding: EdgeInsets.symmetric(horizontal: 18.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,21 +240,31 @@ class _RecipeState extends State<Recipe> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20,),
-                        Text("Procedure",
+                        const SizedBox(height: 20,),
+                        const Text("Procedure",
                           style: TextStyle(
                               fontSize: 24,
                               color: Colors.amber
                           ),
                         ),
-                        SizedBox(height: 10,),
-                        Text(
-                            mealsByID[0].strInstructions,
-                        style: TextStyle(
-                          fontSize: 20
-                        ),
-                        ),
-                        SizedBox(height: 90,)
+                        /*SizedBox(
+                        child: Text(mealsByID!.instructions.toString()))*/
+                    SizedBox(
+                      height: 200, // Adjust height as needed
+                      child: ListView.builder(
+                        itemCount: mealsByID?.instructions.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              mealsByID!.instructions[index], // Access individual instruction
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                        const SizedBox(height: 90,)
                       ],
                     ),
                   ),
@@ -237,35 +272,6 @@ class _RecipeState extends State<Recipe> {
 
             ],
           )
-        // SafeArea(
-        //   child: Column(
-        //     children: [
-        //       // Image.network(
-        //       //   mealsByID[0].strMealThumb,
-        //       //   height: 400, // Adjust the height as needed
-        //       //   width: double.infinity, // To make it fit the width of the screen
-        //       //   fit: BoxFit.cover, // Adjust the image scaling as needed
-        //       // ),
-        //       SizedBox(height: 20,),
-        //       Text(
-        //           mealsByID[0].strMeal,
-        //       style: TextStyle(
-        //         fontSize: 28,
-        //         color: Colors.black,
-        //       )
-        //         ,),
-        //       SizedBox(height: 5,),
-        //       Text(
-        //           'Category : ${mealsByID[0].strCategory}',
-        //       style: TextStyle(
-        //         fontSize: 18
-        //       ),),
-        //
-        //
-        //
-        //     ]
-        //   ),
-        // ),
 
     );
   }

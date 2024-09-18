@@ -1,26 +1,27 @@
+import 'dart:ffi';
+
 class Food{
-  late String strMeal;
-  late String strMealThumb;
-  late String strCategory;
-  late String strArea;
-  late String strInstructions;
-  late String strYoutube;
-  late String strSource;
+  late String name;
+  late String image;
 
-  Food(
-      {
-        required this.strMeal,
-        required this.strMealThumb,
-        required this.strCategory,
-        required this.strArea,
-        required this.strInstructions,
-        required this.strYoutube,
-        required this.strSource
-      }
-      );
+  late String cuisine;
+  late List<String> instructions;
 
 
+  Food({
+    required this.name,
+    required this.image,
+    required this.cuisine,
+    required this.instructions,
 
+  });
 
-
+  factory Food.fromJson(Map<String, dynamic> json) {
+    return Food(
+      name: json['name'],
+      cuisine: json['cuisine'],
+      instructions: List<String>.from(json['instructions']),
+      image: json['image'],
+    );
+  }
 }

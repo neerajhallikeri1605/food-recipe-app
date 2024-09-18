@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_food_app/components/recipeCard.dart';
+import 'package:new_food_app/constants/apiConstant.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,21 +15,21 @@ class Home extends StatefulWidget {
 
 List<dynamic> meals = [];
 
-late String endpoint;
+late int endpoint;
 
 class _HomeState extends State<Home> {
 
   void fetchMeals() async{
     print('fetchMeals Called');
 
-    final response = await http.get(Uri.parse('https://themealdb.com/api/json/v1/1/filter.php?c=Dessert'));
+    final response = await http.get(Uri.parse(ApiConstant.recipeListUrl));
 
     final body = response.body;
 
     final json = jsonDecode(body);
 
     setState(() {
-      meals = json['meals'];
+      meals = json["recipes"];
     });
 
     print(meals);
@@ -55,14 +56,15 @@ class _HomeState extends State<Home> {
             itemCount: meals.length,
             itemBuilder: (context, index) {
               final meal = meals[index];
-              final name = meal['strMeal'];
-              final image = meal['strMealThumb'];
+              final name = meal['name'];
+              final image = meal['image'];
             //  endpoint = meal['idMeal'];
               return RecipeCard(
                 cardName: name,
                 cardImage: image,
                 ontap: (){
-                    endpoint = meal['idMeal'];
+                    endpoint = meal['id'];
+                    print(endpoint);
                     Navigator.pushNamed(context, '/recipe', arguments: endpoint);
                   },
               );
