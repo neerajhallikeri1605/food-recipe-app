@@ -18,6 +18,7 @@ List<dynamic> meals = [];
 late int endpoint;
 
 class _HomeState extends State<Home> {
+  bool isImageLoading = true;
 
   void fetchMeals() async{
     print('fetchMeals Called');
@@ -30,6 +31,9 @@ class _HomeState extends State<Home> {
 
     setState(() {
       meals = json["recipes"];
+      setState(() {
+        isImageLoading = false;
+      });
     });
 
     print(meals);
@@ -45,15 +49,26 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          leading: GestureDetector(
+            onTap: (){
+              Navigator.pushReplacementNamed(context, '/signup');
+            },
+              child: Icon(Icons.door_back_door)),
           title: Text("Home"),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+
+          ),
           centerTitle: true,
           backgroundColor: Colors.amber,
           elevation: 0,
         ),
-        body: ListView.builder(
+        body:isImageLoading ? SpinKitPouringHourGlassRefined(color: Colors.amber, size: 100,): ListView.builder(
             itemCount: meals.length,
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               final meal = meals[index];
               final name = meal['name'];
@@ -61,7 +76,7 @@ class _HomeState extends State<Home> {
             //  endpoint = meal['idMeal'];
               return RecipeCard(
                 cardName: name,
-                cardImage: image,
+                cardImage:image,
                 ontap: (){
                     endpoint = meal['id'];
                     print(endpoint);
