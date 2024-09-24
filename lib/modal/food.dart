@@ -3,7 +3,6 @@ import 'dart:ffi';
 class Food{
   late String name;
   late String image;
-
   late String cuisine;
   late List<String> instructions;
   late List<String> ingredients;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
@@ -50,21 +51,88 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: GestureDetector(
-            onTap: (){
-              Navigator.pushReplacementNamed(context, '/signup');
-            },
-              child: Icon(Icons.door_back_door)),
-          title: Text("Home"),
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 22,
+        appBar:AppBar(
+          toolbarHeight: 60,
+          backgroundColor: Colors.amber[300],
+          /*shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
+          ),*/
+          flexibleSpace: SafeArea(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //Shopping Card
+                SizedBox(
+                  width: 170,
+                  height: 50,
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.pushReplacementNamed(context, '/shopping');
+                    },
+                    child: Card(
+                      color: CupertinoColors.white,
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+                        child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.shopping_bag, color:Colors.blueAccent, size: 25,),
+                                Text(
+                                  " Shopping",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
 
+                //Recipes Card
+                SizedBox(
+                  width: 170,
+                  height: 50,
+                  child: GestureDetector(
+                    onTap: (){
+                      // Navigator.pushNamed(context, '/home');
+                    },
+                    child: Card(
+                      color: Colors.amber[800],
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+                        child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.restaurant_menu, color: Colors.white, size: 25,),
+                                Text(
+                                  " Recipes",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          centerTitle: true,
-          backgroundColor: Colors.amber,
-          elevation: 0,
         ),
         body:isImageLoading ? SpinKitPouringHourGlassRefined(color: Colors.amber, size: 100,): ListView.builder(
             itemCount: meals.length,

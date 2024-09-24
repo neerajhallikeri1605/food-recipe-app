@@ -26,15 +26,19 @@ class _OnboardingState extends State<Onboarding> {
             },
             children: [
               Container(
-                color: Colors.redAccent,
+                color: Colors.blueGrey[300],
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image(image: AssetImage("assets/food-onboarding.png"), height: 300,),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image(image: AssetImage("assets/shoppingGirl.jpg"), height: 300,)),
                       SizedBox(height: 20,),
-                      Text("Page 1 ", style: TextStyle(
-                          fontSize: 30
+                      Text("Shopping", style: TextStyle(
+                          fontSize: 60,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
                       ),
                       ),
                     ],
@@ -42,15 +46,19 @@ class _OnboardingState extends State<Onboarding> {
                 ),
               ),
               Container(
-                color: Colors.blueAccent,
+                color: Colors.deepPurpleAccent[100],
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image(image: AssetImage("assets/chef-onboarding.png"), height: 300,),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image(image: AssetImage("assets/deliveryBoy.jpg"), height: 300,)),
                       SizedBox(height: 20,),
-                      Text("Page 2 ", style: TextStyle(
-                          fontSize: 30
+                      Text("Delivery", style: TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
                       ),
                       ),
                     ],
@@ -58,15 +66,19 @@ class _OnboardingState extends State<Onboarding> {
                 ),
               ),
               Container(
-                color: Colors.greenAccent,
+                color: Colors.blueGrey[300],
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image(image: AssetImage("assets/serve-onboarding.png"), height: 300,),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image(image: AssetImage("assets/cookingGirl.jpg"), height: 300,)),
                       SizedBox(height: 20,),
-                      Text("Page 3 ", style: TextStyle(
-                          fontSize: 30
+                      Text("Cooking", style: TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
                       ),
                       ),
                     ],
@@ -86,8 +98,8 @@ class _OnboardingState extends State<Onboarding> {
             child: isLastPage?
             TextButton(onPressed: () async{
 
-              // final pref = await SharedPreferences.getInstance();
-              // pref.setBool('showHome', true);
+              final pref = await SharedPreferences.getInstance();
+              pref.setBool('showHome', true);
 
                 Navigator.pushReplacementNamed(context, '/signup');
             },

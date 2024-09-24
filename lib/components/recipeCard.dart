@@ -70,3 +70,48 @@ class RecipeCard extends StatelessWidget {
   }
 }
 
+class CategoryCard extends StatelessWidget {
+
+  final String cardName;
+  final Icon icon;
+  final Color color;
+
+  CategoryCard({super.key, required this.cardName, required this.icon, required this.color, });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 120,
+        width:  90,
+        child: Card(
+          color: color,
+          shadowColor: Colors.white70,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //
+                icon,
+                SizedBox(height: 10,),
+                Center(child: Text(
+                  cardName,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white,
+                    fontSize: 14
+                  ),
+
+                )
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+  }
+}
+
+
